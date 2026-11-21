@@ -1,0 +1,851 @@
+{
+  "info": {
+    "_postman_id": "ffc6ccd1-dd5c-49f0-997c-5af1da424347",
+    "name": "EjecucionPruebaModelo",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "18771482"
+  },
+  "item": [
+    {
+      "name": "1. consulta_fecha_negocio_actual",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "{{fineractPassword}}",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "{{fineractUser}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "fineract-platform-tenantid",
+            "value": "{{tenantId}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrlFineract}}/businessdate",
+          "host": [
+            "{{baseUrlFineract}}"
+          ],
+          "path": [
+            "businessdate"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "2. configura_fecha_negocio",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "{{fineractPassword}}",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "{{fineractUser}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "fineract-platform-tenantid",
+            "value": "{{tenantId}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"type\": \"BUSINESS_DATE\",\r\n  \"date\": \"2026-09-15\",\r\n  \"dateFormat\": \"yyyy-MM-dd\",\r\n  \"locale\": \"en\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrlFineract}}/businessdate",
+          "host": [
+            "{{baseUrlFineract}}"
+          ],
+          "path": [
+            "businessdate"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "3. consultamos cliente",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "{{fineractPassword}}",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "{{fineractUser}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "fineract-platform-tenantid",
+            "value": "{{tenantId}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrlFineract}}/clients/{{clientId}}/accounts",
+          "host": [
+            "{{baseUrlFineract}}"
+          ],
+          "path": [
+            "clients",
+            "{{clientId}}",
+            "accounts"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "4. movemos_fecha_para_ejercicio",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "{{fineractPassword}}",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "{{fineractUser}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "fineract-platform-tenantid",
+            "value": "{{tenantId}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"type\": \"BUSINESS_DATE\",\r\n  \"date\": \"2026-10-15\",\r\n  \"dateFormat\": \"yyyy-MM-dd\",\r\n  \"locale\": \"en\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrlFineract}}/businessdate",
+          "host": [
+            "{{baseUrlFineract}}"
+          ],
+          "path": [
+            "businessdate"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "5. consultamos_prestamo_cronograma",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "{{fineractPassword}}",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "{{fineractUser}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "fineract-platform-tenantid",
+            "value": "{{tenantId}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrlFineract}}/loans/{{loanId}}?associations=repaymentSchedule",
+          "host": [
+            "{{baseUrlFineract}}"
+          ],
+          "path": [
+            "loans",
+            "{{loanId}}"
+          ],
+          "query": [
+            {
+              "key": "associations",
+              "value": "repaymentSchedule"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "6. sincronizacion_inicial",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "{{fineractPassword}}",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "{{fineractUser}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "fineract-platform-tenantid",
+            "value": "{{tenantId}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"fechaCorte\": \"2026-10-15\",\r\n  \"diasHorizonte\": 31,\r\n  \"prestamoIds\": [{{loanId}}]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrlHub}}/lotes/sincronizar",
+          "host": [
+            "{{baseUrlHub}}"
+          ],
+          "path": [
+            "lotes",
+            "sincronizar"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "7. consultamos_lotes",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "{{fineractPassword}}",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "{{fineractUser}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "fineract-platform-tenantid",
+            "value": "{{tenantId}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrlHub}}/lotes/{{loteId}}",
+          "host": [
+            "{{baseUrlHub}}"
+          ],
+          "path": [
+            "lotes",
+            "{{loteId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "8. consultamos_orden_cobranza",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "{{fineractPassword}}",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "{{fineractUser}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "fineract-platform-tenantid",
+            "value": "{{tenantId}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrlHub}}/ordenes?loteId={{loteId}}",
+          "host": [
+            "{{baseUrlHub}}"
+          ],
+          "path": [
+            "ordenes"
+          ],
+          "query": [
+            {
+              "key": "loteId",
+              "value": "{{loteId}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "9. registro_pago",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "{{fineractPassword}}",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "{{fineractUser}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "fineract-platform-tenantid",
+            "value": "{{tenantId}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"transactionDate\": \"2026-10-15\",\r\n  \"transactionAmount\": 500.00,\r\n  \"dateFormat\": \"yyyy-MM-dd\",\r\n  \"locale\": \"en\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrlFineract}}/loans/{{loanId}}/transactions?command=repayment",
+          "host": [
+            "{{baseUrlFineract}}"
+          ],
+          "path": [
+            "loans",
+            "{{loanId}}",
+            "transactions"
+          ],
+          "query": [
+            {
+              "key": "command",
+              "value": "repayment"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "10. resincronizar_lote",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "{{fineractPassword}}",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "{{fineractUser}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "fineract-platform-tenantid",
+            "value": "{{tenantId}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"fechaCorte\": \"2026-10-15\",\r\n  \"diasHorizonte\": 31,\r\n  \"prestamoIds\": [{{loanId}}]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrlHub}}/lotes/sincronizar",
+          "host": [
+            "{{baseUrlHub}}"
+          ],
+          "path": [
+            "lotes",
+            "sincronizar"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "11. consultamos_orden_cobranza_despues_pago",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "{{fineractPassword}}",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "{{fineractUser}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "fineract-platform-tenantid",
+            "value": "{{tenantId}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrlHub}}/ordenes?prestamoId={{loanId}}",
+          "host": [
+            "{{baseUrlHub}}"
+          ],
+          "path": [
+            "ordenes"
+          ],
+          "query": [
+            {
+              "key": "prestamoId",
+              "value": "{{loanId}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "12. consultamos_prestamo_despues_pago",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "{{fineractPassword}}",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "{{fineractUser}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "fineract-platform-tenantid",
+            "value": "{{tenantId}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrlFineract}}/loans/{{loanId}}?associations=repaymentSchedule",
+          "host": [
+            "{{baseUrlFineract}}"
+          ],
+          "path": [
+            "loans",
+            "{{loanId}}"
+          ],
+          "query": [
+            {
+              "key": "associations",
+              "value": "repaymentSchedule"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "13. registro_pago_restante_cuota1",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "{{fineractPassword}}",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "{{fineractUser}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "fineract-platform-tenantid",
+            "value": "{{tenantId}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"transactionDate\": \"2026-10-15\",\r\n  \"transactionAmount\": 620.00,\r\n  \"dateFormat\": \"yyyy-MM-dd\",\r\n  \"locale\": \"en\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrlFineract}}/loans/{{loanId}}/transactions?command=repayment",
+          "host": [
+            "{{baseUrlFineract}}"
+          ],
+          "path": [
+            "loans",
+            "{{loanId}}",
+            "transactions"
+          ],
+          "query": [
+            {
+              "key": "command",
+              "value": "repayment"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "14. resincronizar_lote_despue_pago_restante",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "{{fineractPassword}}",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "{{fineractUser}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "fineract-platform-tenantid",
+            "value": "{{tenantId}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"fechaCorte\": \"2026-10-15\",\r\n  \"diasHorizonte\": 31,\r\n  \"prestamoIds\": [{{loanId}}]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrlHub}}/lotes/sincronizar",
+          "host": [
+            "{{baseUrlHub}}"
+          ],
+          "path": [
+            "lotes",
+            "sincronizar"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "15. consultamos_orden_cobranza_despues_pago_restante",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "{{fineractPassword}}",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "{{fineractUser}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "fineract-platform-tenantid",
+            "value": "{{tenantId}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrlHub}}/ordenes?prestamoId={{loanId}}",
+          "host": [
+            "{{baseUrlHub}}"
+          ],
+          "path": [
+            "ordenes"
+          ],
+          "query": [
+            {
+              "key": "prestamoId",
+              "value": "{{loanId}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrlFineract",
+      "value": ""
+    },
+    {
+      "key": "baseUrlHub",
+      "value": ""
+    },
+    {
+      "key": "tenantId",
+      "value": ""
+    },
+    {
+      "key": "fineractUser",
+      "value": ""
+    },
+    {
+      "key": "fineractPassword",
+      "value": ""
+    },
+    {
+      "key": "clientId",
+      "value": ""
+    },
+    {
+      "key": "loanId",
+      "value": ""
+    },
+    {
+      "key": "loteId",
+      "value": ""
+    }
+  ]
+}

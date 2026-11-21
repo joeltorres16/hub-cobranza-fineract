@@ -1,0 +1,37 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: hub-cobranza-fineract
+  datasource:
+    url: ${HUB_DB_URL:jdbc:mariadb://localhost:3306/hub_cobranza?serverTimezone=UTC&useLegacyDatetimeCode=false&sessionVariables=time_zone='+00:00'}
+    username: ${HUB_DB_USERNAME:root}
+    password: ${HUB_DB_PASSWORD:rootpass}
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+fineract:
+  base-url: ${FINERACT_BASE_URL:https://localhost:8443/fineract-provider/api/v1}
+  tenant-id: ${FINERACT_TENANT_ID:default}
+  username: ${FINERACT_USERNAME:mifos}
+  password: ${FINERACT_PASSWORD:password}
+  connect-timeout-ms: ${FINERACT_CONNECT_TIMEOUT_MS:5000}
+  read-timeout-ms: ${FINERACT_READ_TIMEOUT_MS:15000}
+  insecure-ssl: ${FINERACT_INSECURE_SSL:true}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html

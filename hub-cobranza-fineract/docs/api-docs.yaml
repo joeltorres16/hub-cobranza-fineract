@@ -1,0 +1,200 @@
+openapi: 3.1.0
+info:
+  title: API de cobranza
+  description: Sincronización y consulta de órdenes de cobranza
+  contact:
+    name: Prestamype
+  version: 0.1.0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+paths:
+  /api/v1/lotes/sincronizar:
+    post:
+      tags:
+      - cobranza-controller
+      operationId: sincronizarLote
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SincronizarLoteRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/LoteCobranzaResponse"
+  /api/v1/ordenes:
+    get:
+      tags:
+      - cobranza-controller
+      operationId: buscarOrdenes
+      parameters:
+      - name: loteId
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+      - name: prestamoId
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+      - name: fechaVencimientoDesde
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+      - name: fechaVencimientoHasta
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+      - name: situacion
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - PENDIENTE
+          - PAGO_PARCIAL
+          - VENCIDA
+          - PAGADA
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OrdenCobranzaResponse"
+  /api/v1/lotes/{loteId}:
+    get:
+      tags:
+      - cobranza-controller
+      operationId: buscarLote
+      parameters:
+      - name: loteId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/LoteCobranzaResponse"
+components:
+  schemas:
+    SincronizarLoteRequest:
+      type: object
+      properties:
+        fechaCorte:
+          type: string
+          format: date
+        diasHorizonte:
+          type: integer
+          format: int32
+          minimum: 0
+        prestamoIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+          minItems: 1
+      required:
+      - fechaCorte
+    LoteCobranzaResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        fechaCorte:
+          type: string
+          format: date
+        diasHorizonte:
+          type: integer
+          format: int32
+        fechaFinHorizonte:
+          type: string
+          format: date
+        prestamosSolicitados:
+          type: array
+          items:
+            type: integer
+            format: int64
+        estado:
+          type: string
+          enum:
+          - EN_PROCESO
+          - COMPLETADO
+          - COMPLETADO_CON_ERRORES
+          - FALLIDO
+        totalOrdenes:
+          type: integer
+          format: int32
+        mensajeError:
+          type: string
+        creadoEn:
+          type: string
+          format: date-time
+        actualizadoEn:
+          type: string
+          format: date-time
+    OrdenCobranzaResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        loteId:
+          type: integer
+          format: int64
+        clienteId:
+          type: integer
+          format: int64
+        clienteReferenciaExterna:
+          type: string
+        clienteNombre:
+          type: string
+        prestamoId:
+          type: integer
+          format: int64
+        prestamoReferenciaExterna:
+          type: string
+        numeroCuota:
+          type: integer
+          format: int32
+        moneda:
+          type: string
+        fechaVencimiento:
+          type: string
+          format: date
+        capitalPendiente:
+          type: number
+        interesPendiente:
+          type: number
+        totalPorCobrar:
+          type: number
+        situacion:
+          type: string
+          enum:
+          - PENDIENTE
+          - PAGO_PARCIAL
+          - VENCIDA
+          - PAGADA
+        sincronizadoEn:
+          type: string
+          format: date-time

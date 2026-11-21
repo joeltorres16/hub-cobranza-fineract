@@ -1,0 +1,91 @@
+services:
+  mariadb:
+    image: mariadb:11.5.2
+    container_name: fineract-mariadb
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    environment:
+      TZ: UTC
+      MARIADB_ROOT_PASSWORD: "${DB_PASSWORD:-rootpass}"
+    command:
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_unicode_ci"
+      - "--default-time-zone=+00:00"
+    volumes:
+      - fineract_mariadb_data:/var/lib/mysql
+      - ./docker/mariadb-init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb-admin ping -h 127.0.0.1 -uroot -p\"$$MARIADB_ROOT_PASSWORD\" --silent || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+      start_period: 20s
+    networks:
+      - fineract-net
+    restart: unless-stopped
+
+  fineract:
+    image: apache/fineract:1.12.1
+    container_name: apache-fineract
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    ports:
+      - "${FINERACT_EXTERNAL_PORT:-8443}:8443"
+    environment:
+      TZ: UTC
+      JAVA_TOOL_OPTIONS: "${FINERACT_JAVA_OPTS:--Duser.timezone=UTC -Xms1g -Xmx3g}"
+      FINERACT_HIKARI_DRIVER_SOURCE_CLASS_NAME: "org.mariadb.jdbc.Driver"
+      FINERACT_HIKARI_JDBC_URL: "jdbc:mariadb://fineract-mariadb:3306/fineract_tenants?serverTimezone=UTC&useLegacyDatetimeCode=false&sessionVariables=time_zone='+00:00'"
+      FINERACT_HIKARI_USERNAME: "${DB_USER:-root}"
+      FINERACT_HIKARI_PASSWORD: "${DB_PASSWORD:-rootpass}"
+      FINERACT_DEFAULT_TENANTDB_HOSTNAME: "fineract-mariadb"
+      FINERACT_DEFAULT_TENANTDB_PORT: "3306"
+      FINERACT_DEFAULT_TENANTDB_UID: "${DB_USER:-root}"
+      FINERACT_DEFAULT_TENANTDB_PWD: "${DB_PASSWORD:-rootpass}"
+      FINERACT_DEFAULT_TENANTDB_CONN_PARAMS: "serverTimezone=UTC&useLegacyDatetimeCode=false&sessionVariables=time_zone='+00:00'"
+    healthcheck:
+      test: [ "CMD-SHELL", "grep -qi ':20FB' /proc/net/tcp /proc/net/tcp6 2>/dev/null || exit 1" ]
+      interval: 15s
+      timeout: 5s
+      retries: 30
+      start_period: 120s
+    networks:
+      - fineract-net
+    restart: unless-stopped
+
+  collection-hub:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: collection-hub
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      fineract:
+        condition: service_healthy
+    ports:
+      - "${SERVER_PORT:-8080}:8080"
+    environment:
+      TZ: UTC
+      JAVA_TOOL_OPTIONS: "-Duser.timezone=UTC"
+      HUB_DB_URL: "jdbc:mariadb://${DB_HOST:-fineract-mariadb}:${DB_PORT:-3306}/${DB_NAME:-hub_cobranza}?serverTimezone=UTC&useLegacyDatetimeCode=false&sessionVariables=time_zone='+00:00'"
+      HUB_DB_USERNAME: "${DB_USER:-root}"
+      HUB_DB_PASSWORD: "${DB_PASSWORD:-rootpass}"
+      FINERACT_BASE_URL: "${FINERACT_BASE_URL:-https://apache-fineract:8443/fineract-provider/api/v1}"
+      FINERACT_TENANT_ID: "${FINERACT_TENANT_ID:-default}"
+      FINERACT_USERNAME: "${FINERACT_USERNAME:-mifos}"
+      FINERACT_PASSWORD: "${FINERACT_PASSWORD:-password}"
+      FINERACT_CONNECT_TIMEOUT_MS: "${FINERACT_CONNECT_TIMEOUT_MS:-5000}"
+      FINERACT_READ_TIMEOUT_MS: "${FINERACT_READ_TIMEOUT_MS:-15000}"
+      FINERACT_INSECURE_SSL: "${FINERACT_INSECURE_SSL:-true}"
+    networks:
+      - fineract-net
+    restart: unless-stopped
+
+volumes:
+  fineract_mariadb_data:
+
+networks:
+  fineract-net:
+    driver: bridge

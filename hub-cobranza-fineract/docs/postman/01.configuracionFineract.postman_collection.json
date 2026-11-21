@@ -1,0 +1,493 @@
+{
+  "info": {
+    "_postman_id": "7e15d87c-3d37-4e59-95cf-e61e1086f3c7",
+    "name": "configuracionFineract",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "18771482"
+  },
+  "item": [
+    {
+      "name": "1. consulta_existencia_tipo_moneda",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "{{fineractPassword}}",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "{{fineractUser}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "fineract-platform-tenantid",
+            "value": "{{tenantId}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrlFineract}}/currencies",
+          "host": [
+            "{{baseUrlFineract}}"
+          ],
+          "path": [
+            "currencies"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "2. selecciona_tipo_moneda_PEN",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "{{fineractPassword}}",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "{{fineractUser}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [
+          {
+            "key": "fineract-platform-tenantid",
+            "value": "{{tenantId}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"currencies\": [\"PEN\", \"USD\"]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrlFineract}}/currencies",
+          "host": [
+            "{{baseUrlFineract}}"
+          ],
+          "path": [
+            "currencies"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "3. activa_configuracion_fecha",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "{{fineractPassword}}",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "{{fineractUser}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [
+          {
+            "key": "fineract-platform-tenantid",
+            "value": "{{tenantId}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"enabled\": true\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrlFineract}}/configurations/44",
+          "host": [
+            "{{baseUrlFineract}}"
+          ],
+          "path": [
+            "configurations",
+            "44"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "4. configura_fecha_vencimiento_mismo_dia",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "{{fineractPassword}}",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "{{fineractUser}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [
+          {
+            "key": "fineract-platform-tenantid",
+            "value": "{{tenantId}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"recurrence\": \"FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,TU,WE,TH,FR,SA,SU\",\r\n  \"repaymentRescheduleType\": 1,\r\n  \"extendTermForDailyRepayments\": false,\r\n  \"extendTermForRepaymentsOnHolidays\": false,\r\n  \"locale\": \"en\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrlFineract}}/workingdays",
+          "host": [
+            "{{baseUrlFineract}}"
+          ],
+          "path": [
+            "workingdays"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "5. creacion_cliente",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "{{fineractPassword}}",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "{{fineractUser}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "fineract-platform-tenantid",
+            "value": "{{tenantId}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"officeId\": 1,\r\n  \"legalFormId\": 1,\r\n  \"firstname\": \"Ana Demo\",\r\n  \"lastname\": \"Integración\",\r\n  \"externalId\": \"CLIENT-DEMO-001\",\r\n  \"active\": true,\r\n  \"activationDate\": \"01 September 2026\",\r\n  \"dateFormat\": \"dd MMMM yyyy\",\r\n  \"locale\": \"en\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrlFineract}}/clients",
+          "host": [
+            "{{baseUrlFineract}}"
+          ],
+          "path": [
+            "clients"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "6. creacion_producto",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "{{fineractPassword}}",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "{{fineractUser}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "fineract-platform-tenantid",
+            "value": "{{tenantId}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"DEMO-CUMULATIVE\",\r\n  \"shortName\": \"DEMC\",\r\n  \"currencyCode\": \"PEN\",\r\n  \"digitsAfterDecimal\": 2,\r\n  \"inMultiplesOf\": 1,\r\n  \"principal\": 12000.00,\r\n  \"numberOfRepayments\": 12,\r\n  \"repaymentEvery\": 1,\r\n  \"repaymentFrequencyType\": 2,\r\n  \"interestRatePerPeriod\": 1.00,\r\n  \"interestRateFrequencyType\": 2,\r\n  \"amortizationType\": 0,\r\n  \"interestType\": 0,\r\n  \"interestCalculationPeriodType\": 1,\r\n  \"loanScheduleType\": \"CUMULATIVE\",\r\n  \"transactionProcessingStrategyCode\": \"mifos-standard-strategy\",\r\n  \"daysInMonthType\": 30,\r\n  \"daysInYearType\": 360,\r\n  \"isInterestRecalculationEnabled\": false,\r\n  \"accountingRule\": 1,\r\n  \"locale\": \"en\",\r\n  \"dateFormat\": \"dd MMMM yyyy\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrlFineract}}/loanproducts",
+          "host": [
+            "{{baseUrlFineract}}"
+          ],
+          "path": [
+            "loanproducts"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "7. creacion_solicitud_prestamo",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "{{fineractPassword}}",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "{{fineractUser}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "fineract-platform-tenantid",
+            "value": "{{tenantId}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"clientId\": 1,\r\n  \"productId\": 1,\r\n  \"externalId\": \"LOAN-DEMO-001\",\r\n  \"loanType\": \"individual\",\r\n  \"principal\": 12000.00,\r\n  \"loanTermFrequency\": 12,\r\n  \"loanTermFrequencyType\": 2,\r\n  \"numberOfRepayments\": 12,\r\n  \"repaymentEvery\": 1,\r\n  \"repaymentFrequencyType\": 2,\r\n  \"interestRatePerPeriod\": 1.00,\r\n  \"interestRateFrequencyType\": 2,\r\n  \"amortizationType\": 0,\r\n  \"interestType\": 0,\r\n  \"interestCalculationPeriodType\": 1,\r\n  \"transactionProcessingStrategyCode\": \"mifos-standard-strategy\",\r\n  \"daysInYearType\": 360,\r\n  \"submittedOnDate\": \"15 September 2026\",\r\n  \"expectedDisbursementDate\": \"15 September 2026\",\r\n  \"interestChargedFromDate\": \"15 September 2026\",\r\n  \"repaymentsStartingFromDate\": \"15 October 2026\",\r\n  \"locale\": \"en\",\r\n  \"dateFormat\": \"dd MMMM yyyy\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrlFineract}}/loans",
+          "host": [
+            "{{baseUrlFineract}}"
+          ],
+          "path": [
+            "loans"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "8. aprobacion_prestamo",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "{{fineractPassword}}",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "{{fineractUser}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "fineract-platform-tenantid",
+            "value": "{{tenantId}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"approvedOnDate\": \"15 September 2026\",\r\n  \"approvedLoanAmount\": 12000.00,\r\n  \"expectedDisbursementDate\": \"15 September 2026\",\r\n  \"locale\": \"en\",\r\n  \"dateFormat\": \"dd MMMM yyyy\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrlFineract}}/loans/1?command=approve",
+          "host": [
+            "{{baseUrlFineract}}"
+          ],
+          "path": [
+            "loans",
+            "1"
+          ],
+          "query": [
+            {
+              "key": "command",
+              "value": "approve"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "9. desembolso_prestamo",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "{{fineractPassword}}",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "{{fineractUser}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "fineract-platform-tenantid",
+            "value": "{{tenantId}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"actualDisbursementDate\": \"15 September 2026\",\r\n  \"transactionAmount\": 12000.00,\r\n  \"locale\": \"en\",\r\n  \"dateFormat\": \"dd MMMM yyyy\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrlFineract}}/loans/1?command=disburse",
+          "host": [
+            "{{baseUrlFineract}}"
+          ],
+          "path": [
+            "loans",
+            "1"
+          ],
+          "query": [
+            {
+              "key": "command",
+              "value": "disburse"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrlFineract",
+      "value": ""
+    },
+    {
+      "key": "tenantId",
+      "value": ""
+    },
+    {
+      "key": "fineractUser",
+      "value": ""
+    },
+    {
+      "key": "fineractPassword",
+      "value": ""
+    }
+  ]
+}
