@@ -8,11 +8,20 @@ info:
 servers:
 - url: http://localhost:8080
   description: Generated server url
+tags:
+- name: Modulo de Cobranza Fineract
+  description: "Modulo integrado a Fineract, permite generar y consultar lotes de\
+    \ cobranza y sus ordenes. "
 paths:
   /api/v1/lotes/sincronizar:
     post:
       tags:
-      - cobranza-controller
+      - Modulo de Cobranza Fineract
+      summary: Sincronizar préstamos
+      description: |
+        Consulta en Fineract el cronograma de cada préstamo indicado y crea un lote
+        con órdenes locales para las cuotas que tengan saldo pendiente y venzan
+        hasta el fin del horizonte. Incluye cuotas vencidas.
       operationId: sincronizarLote
       requestBody:
         content:
@@ -30,7 +39,12 @@ paths:
   /api/v1/ordenes:
     get:
       tags:
-      - cobranza-controller
+      - Modulo de Cobranza Fineract
+      summary: Consultar órdenes de cobranza
+      description: |
+        Devuelve las órdenes locales de cobranza que coinciden con los filtros indicados.
+        Se puede filtrar por lote, préstamo, rango de vencimiento y situación.
+        Los filtros son opcionales. Si no hay coincidencias, devuelve una lista vacía.
       operationId: buscarOrdenes
       parameters:
       - name: loteId
@@ -79,7 +93,11 @@ paths:
   /api/v1/lotes/{loteId}:
     get:
       tags:
-      - cobranza-controller
+      - Modulo de Cobranza Fineract
+      summary: Consultar un lote local
+      description: |
+        Devuelve el resultado de una ejecución de sincronización por su identificador.
+        Si el lote no existe, responde con HTTP 404.
       operationId: buscarLote
       parameters:
       - name: loteId

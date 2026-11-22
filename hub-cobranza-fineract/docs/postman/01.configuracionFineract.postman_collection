@@ -293,7 +293,54 @@
       "response": []
     },
     {
-      "name": "7. creacion_solicitud_prestamo",
+      "name": "7. configura_fecha_negocio",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "{{fineractPassword}}",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "{{fineractUser}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "fineract-platform-tenantid",
+            "value": "{{tenantId}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"type\": \"BUSINESS_DATE\",\r\n  \"date\": \"2026-09-15\",\r\n  \"dateFormat\": \"yyyy-MM-dd\",\r\n  \"locale\": \"en\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrlFineract}}/businessdate",
+          "host": [
+            "{{baseUrlFineract}}"
+          ],
+          "path": [
+            "businessdate"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "8. creacion_solicitud_prestamo",
       "request": {
         "auth": {
           "type": "basic",
@@ -340,7 +387,7 @@
       "response": []
     },
     {
-      "name": "8. aprobacion_prestamo",
+      "name": "9. aprobacion_prestamo",
       "request": {
         "auth": {
           "type": "basic",
@@ -394,7 +441,7 @@
       "response": []
     },
     {
-      "name": "9. desembolso_prestamo",
+      "name": "10. desembolso_prestamo",
       "request": {
         "auth": {
           "type": "basic",

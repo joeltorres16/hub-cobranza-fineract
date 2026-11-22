@@ -1,14 +1,38 @@
-Propósito y rol de hub-cobranza-fineract bajo enfoque BIAN
+# Alineamiento de `hub-cobranza-fineract` con BIAN
 
-hub-cobranza-fineract actúa como un microservicio especializado de gestión y orquestación de cobranzas que se integra con Apache Fineract 1.12.1 (core bancario responsable de la cuenta de préstamo, cronograma de cuotas, estrategia de imputación mifos-standard-strategy y registro contable/transaccional de pagos) y persiste su propio modelo operativo y de auditoría en MariaDB (hub_cobranza).
+## Alcance y versión
 
-En lugar de acoplar consumidores externos directamente a las estructuras internas del core o sobrescribir el historial de cada consulta, el microservicio expone una interfaz propia (POST /api/v1/lotes/sincronizar, consultas de lotes y consultas de órdenes de cobranza) y mantiene trazabilidad de cada corrida mediante lotes y órdenes de cobranza.
+Este análisis toma como referencia **BIAN Service Landscape 14.0**, publicado en febrero de 2026. La versión identifica los Service Domains y sus responsabilidades de negocio; el mapeo siguiente es una correspondencia arquitectónica conceptual, no afirma que este Hub implemente íntegramente ningún Service Domain ni que su API sea una implementación de las Semantic APIs de BIAN.
 
+El caso de uso es acotado: Apache Fineract mantiene los préstamos, sus cronogramas y los pagos; `hub-cobranza-fineract` consulta esa información por HTTP y conserva una vista local de las cuotas con saldo pendiente. El Hub no origina ni administra el préstamo y tampoco inicia pagos, contacta clientes o ejecuta estrategias de recuperación.
 
+## Service Domains relacionados
 
-| Concepto en `hub-cobranza-fineract` / Fineract | Bloque funcional / dominio de referencia BIAN | Responsabilidad en el flujo |
-| :--- | :--- | :--- |
-| Préstamo, cronograma y pagos (`LOAN-DEMO-001` en Fineract) | Gestión de préstamos / cuentas de crédito y pagos (`Loan` / `Repayment`) | Fuente de verdad del cronograma de cuotas, capital e interés por cuota, aplicación de pagos (`S/ 500,00` y `S/ 620,00`) y estado actual de deuda. |
-| Lote de sincronización (`Lote`) | Orquestación / control de procesos batch de cobranza | Define la ventana de evaluación (`fechaCorte`, `diasHorizonte`, `fechaFinHorizonte`), los préstamos consultados, el estado (`COMPLETADO` / `FALLIDO`), cantidad de órdenes y marcas de tiempo. |
-| Orden de cobranza (`OrdenCobranza`) | Gestión de cobranzas / seguimiento de cuotas por cobrar (`Collection` / `Receivable`) | Representa cada cuota exigible dentro de la ventana con desglose de `capitalPendiente`, `interesPendiente`, `totalPorCobrar` y `situacion` (`PENDIENTE`, `PAGO_PARCIAL`; se omite cuando queda saldada). |
-| Historial de lotes (`9`, `10`, `11`) | Registro y auditoría de estados operativos | Conserva la fotografía de cada sincronización para contrastar el estado inicial, el pago parcial y la cancelación de la cuota 1 sin perder trazabilidad. |
+| Service Domain BIAN (nombre oficial) | Responsabilidad descrita por BIAN | Relación con la solución | Alcance / límite |
+|---|---|---|---|
+| **Consumer Loan** | Gestiona la realización de un producto de préstamo de consumo, incluyendo la configuración inicial del préstamo y el procesamiento programado o eventual. | Es la referencia funcional más cercana al préstamo individual del caso. Fineract es el sistema que administra el préstamo y entrega al Hub el cronograma y sus saldos mediante su API pública. | El Hub solo consume datos del préstamo; no crea, aprueba, desembolsa ni modifica el préstamo. La alineación corresponde principalmente a la responsabilidad del sistema fuente, no a una implementación del dominio por el Hub. |
+| **Delinquent Account Handling** | Trata cuentas morosas mediante revisión y seguimiento de pagos debidos; el dominio descrito por BIAN se orienta típicamente a cuentas activas de crédito o charge card y puede transferir casos a Collections. | Las órdenes locales identifican cuotas con saldo pendiente, vencidas o próximas a vencer y permiten consultarlas por préstamo, vencimiento y situación. Esta vista puede apoyar un proceso de seguimiento de cobranza. | La solución no gestiona contactos, promesas de pago, acciones de recuperación ni transferencia de casos. Tampoco se debe interpretar cada cuota pendiente como una cuenta morosa: el Hub incluye cuotas futuras dentro del horizonte. Por ello, es una afinidad parcial, no una equivalencia funcional. |
+
+## Responsabilidades del Hub que no se presentan como Service Domains
+
+El **lote de sincronización** (`LoteCobranza`) es una decisión de diseño técnico para agrupar una ejecución, registrar su ventana, resultado y errores. La **orden de cobranza** (`OrdenCobranza`) es el modelo local de una cuota pendiente para consulta operacional, no una orden de pago ni una instrucción para mover fondos. El historial de lotes y la auditoría de las lecturas también son responsabilidades internas del Hub. En este diseño no se les asigna un Service Domain BIAN específico porque no hay evidencia de que sean una implementación directa de uno.
+
+El Service Domain **Collections** de BIAN no se usa como correspondencia directa: su definición en el artefacto consultado se refiere a liquidar activos para compensar pérdidas en cuentas problemáticas, responsabilidad distinta de listar cuotas pendientes para su cobranza.
+
+## Flujo y límites de responsabilidad
+
+1. Un consumidor solicita al Hub una sincronización con préstamos, fecha de corte y horizonte.
+2. El Hub consulta a Fineract por HTTP; Fineract es la fuente de verdad del préstamo, el cronograma y los saldos derivados de pagos.
+3. El Hub aplica el filtro de ventana y saldo pendiente, crea el lote y persiste las órdenes en su propia base de datos.
+4. El consumidor consulta los lotes y las órdenes locales. Los pagos de demostración se registran directamente en Fineract; una nueva sincronización refleja los saldos que devuelve el core.
+
+Esta separación evita atribuir al Hub cálculos de intereses, registro de pagos o mantenimiento del préstamo. El total local por cobrar es la suma del capital e interés pendientes que se leen de Fineract.
+
+## Fuentes
+
+- BIAN, [Service Landscape](https://bian.org/deliverables/service-landscape/): identifica la versión 14.0 y su publicación en febrero de 2026.
+- BIAN, [repositorio oficial de Semantic APIs, Consumer Loan, release 14.0.0](https://github.com/bian-official/public/blob/main/release14.0.0/semantic-apis/oas3%20/yamls/ConsumerLoan.yaml): definición y contrato publicados para el Service Domain.
+- BIAN, [repositorio oficial de Semantic APIs, Delinquent Account Handling, release 14.0.0](https://github.com/bian-official/public/blob/main/release14.0.0/semantic-apis/oas3%20/yamls/DelinquentAccountHandling.yaml): definición y contrato publicados para el Service Domain.
+- BIAN, [repositorio oficial de Semantic APIs, Collections, release 14.0.0](https://github.com/bian-official/public/blob/main/release14.0.0/semantic-apis/oas3%20/yamls/Collections.yaml): definición consultada para delimitar por qué no se usa como correspondencia directa.
+
+Las definiciones de los Service Domains se resumen y traducen aquí al español; para el texto normativo y sus operaciones, consultar los artefactos oficiales enlazados. Los Service Domains se usan como referencias de capacidades de negocio, no como una afirmación de conformidad o certificación BIAN del Hub.

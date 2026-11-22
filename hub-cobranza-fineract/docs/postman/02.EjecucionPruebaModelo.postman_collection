@@ -57,54 +57,7 @@
       "response": []
     },
     {
-      "name": "2. configura_fecha_negocio",
-      "request": {
-        "auth": {
-          "type": "basic",
-          "basic": [
-            {
-              "key": "password",
-              "value": "{{fineractPassword}}",
-              "type": "string"
-            },
-            {
-              "key": "username",
-              "value": "{{fineractUser}}",
-              "type": "string"
-            }
-          ]
-        },
-        "method": "POST",
-        "header": [
-          {
-            "key": "fineract-platform-tenantid",
-            "value": "{{tenantId}}",
-            "type": "text"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n  \"type\": \"BUSINESS_DATE\",\r\n  \"date\": \"2026-09-15\",\r\n  \"dateFormat\": \"yyyy-MM-dd\",\r\n  \"locale\": \"en\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{baseUrlFineract}}/businessdate",
-          "host": [
-            "{{baseUrlFineract}}"
-          ],
-          "path": [
-            "businessdate"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "3. consultamos cliente",
+      "name": "2. consultamos cliente",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
       },
@@ -156,7 +109,7 @@
       "response": []
     },
     {
-      "name": "4. movemos_fecha_para_ejercicio",
+      "name": "3. movemos_fecha_para_ejercicio",
       "request": {
         "auth": {
           "type": "basic",
@@ -203,7 +156,7 @@
       "response": []
     },
     {
-      "name": "5. consultamos_prestamo_cronograma",
+      "name": "4. consultamos_prestamo_cronograma",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
       },
@@ -260,7 +213,7 @@
       "response": []
     },
     {
-      "name": "6. sincronizacion_inicial",
+      "name": "5. sincronizacion_inicial",
       "request": {
         "auth": {
           "type": "basic",
@@ -308,7 +261,7 @@
       "response": []
     },
     {
-      "name": "7. consultamos_lotes",
+      "name": "6. consultamos_lotes",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
       },
@@ -359,7 +312,7 @@
       "response": []
     },
     {
-      "name": "8. consultamos_orden_cobranza",
+      "name": "7. consultamos_orden_cobranza",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
       },
@@ -415,7 +368,7 @@
       "response": []
     },
     {
-      "name": "9. registro_pago",
+      "name": "8. registro_pago",
       "request": {
         "auth": {
           "type": "basic",
@@ -470,7 +423,7 @@
       "response": []
     },
     {
-      "name": "10. resincronizar_lote",
+      "name": "9. resincronizar_lote",
       "request": {
         "auth": {
           "type": "basic",
@@ -518,7 +471,7 @@
       "response": []
     },
     {
-      "name": "11. consultamos_orden_cobranza_despues_pago",
+      "name": "10. consultamos_orden_cobranza_despues_pago",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
       },
@@ -574,7 +527,7 @@
       "response": []
     },
     {
-      "name": "12. consultamos_prestamo_despues_pago",
+      "name": "11. consultamos_prestamo_despues_pago",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
       },
@@ -631,7 +584,7 @@
       "response": []
     },
     {
-      "name": "13. registro_pago_restante_cuota1",
+      "name": "12. registro_pago_restante_cuota1",
       "request": {
         "auth": {
           "type": "basic",
@@ -686,7 +639,7 @@
       "response": []
     },
     {
-      "name": "14. resincronizar_lote_despue_pago_restante",
+      "name": "13. resincronizar_lote_despue_pago_restante",
       "request": {
         "auth": {
           "type": "basic",
@@ -734,7 +687,7 @@
       "response": []
     },
     {
-      "name": "15. consultamos_orden_cobranza_despues_pago_restante",
+      "name": "14. consultamos_orden_cobranza_despues_pago_restante",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
       },

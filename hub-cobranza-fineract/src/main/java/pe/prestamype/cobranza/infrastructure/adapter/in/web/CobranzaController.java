@@ -1,5 +1,7 @@
 package pe.prestamype.cobranza.infrastructure.adapter.in.web;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,10 @@ import pe.prestamype.cobranza.infrastructure.adapter.in.web.dto.SincronizarLoteR
 import java.time.LocalDate;
 import java.util.List;
 
+@Tag(
+        name = "Modulo de Cobranza Fineract",
+        description = "Modulo integrado a Fineract, permite generar y consultar lotes de cobranza y sus ordenes. "
+)
 @RestController
 @RequestMapping("/api/v1")
 public class CobranzaController {
@@ -30,6 +36,14 @@ public class CobranzaController {
         this.consultarCobranzaQuery = consultarCobranzaQuery;
     }
 
+    @Operation(
+            summary = "Sincronizar préstamos",
+            description = """
+            Consulta en Fineract el cronograma de cada préstamo indicado y crea un lote
+            con órdenes locales para las cuotas que tengan saldo pendiente y venzan
+            hasta el fin del horizonte. Incluye cuotas vencidas.
+            """
+    )
     @PostMapping("/lotes/sincronizar")
     public ResponseEntity<LoteCobranzaResponse> sincronizarLote(@Valid @RequestBody SincronizarLoteRequest request) {
         var lote = sincronizarLoteUseCase.sincronizar(
@@ -42,6 +56,13 @@ public class CobranzaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(LoteCobranzaResponse.fromDomain(lote));
     }
 
+    @Operation(
+            summary = "Consultar un lote local",
+            description = """
+        Devuelve el resultado de una ejecución de sincronización por su identificador.
+        Si el lote no existe, responde con HTTP 404.
+        """
+    )
     @GetMapping("/lotes/{loteId}")
     public ResponseEntity<LoteCobranzaResponse> buscarLote(@PathVariable Long loteId) {
         return consultarCobranzaQuery.buscarLotePorId(loteId)
@@ -50,6 +71,14 @@ public class CobranzaController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @Operation(
+            summary = "Consultar órdenes de cobranza",
+            description = """
+        Devuelve las órdenes locales de cobranza que coinciden con los filtros indicados.
+        Se puede filtrar por lote, préstamo, rango de vencimiento y situación.
+        Los filtros son opcionales. Si no hay coincidencias, devuelve una lista vacía.
+        """
+    )
     @GetMapping("/ordenes")
     public ResponseEntity<List<OrdenCobranzaResponse>> buscarOrdenes(
             @RequestParam(required = false) Long loteId,
